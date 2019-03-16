@@ -23,15 +23,27 @@ namespace LightsOut
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        LightOffMatrix GameMatrix;
 
         public MainWindow()
         {
             InitializeComponent();
             InitializeUserinteface();
+            InitBusinesslayer();
         }
 
-        private void InitializeUserinteface(Byte LevelNumber=0)
+        private void InitBusinesslayer(int LevelNumber = 0)
+        {
+            int LevelRows = JsonLevels.Level(LevelNumber).Rows;
+            int LevelColumns = JsonLevels.Level(LevelNumber).Columns;
+
+            GameMatrix = new LightOffMatrix(LevelRows,LevelColumns);
+            //GameMatrix.Init(JsonLevels.Level(LevelNumber).On);
+            UpdateUserinterface(GameMatrix.Data);
+
+        }
+
+        private void InitializeUserinteface(int LevelNumber=0)
         {
 
             int iRow = -1;
@@ -46,16 +58,21 @@ namespace LightsOut
             this.Width = LevelColumns * new KeyControl().PanelWidth;
             this.Height= LevelRows* new KeyControl().PanelHeight + 50;
 
+            
+
             foreach (RowDefinition row in GamePanel.RowDefinitions)
             {
                 iRow++;
                 iCol = -1;
                 foreach(ColumnDefinition col in GamePanel.ColumnDefinitions)
                 {
-                    KeyControl Key = new KeyControl();
                     iCol++;
+                    KeyControl Key = new KeyControl();
+                    Key.Tag = iRow * LevelColumns + iCol;
+
                     RemoveLogicalChild(Key);
                     GamePanel.Children.Add(Key);
+
                     Grid.SetColumn(Key, iCol);
                     Grid.SetRow(Key, iRow);
                     Key.OnSwitch += OnKeySwitched;
@@ -80,9 +97,21 @@ namespace LightsOut
             this.Title = "LightOFF (Level" + (LevelNumber+1) + ")";
         }
 
+        public void UpdateUserinterface(Boolean[,] Matrix)
+        {
+            foreach (KeyControl key in GamePanel.Children)
+                key.On = Matrix[Grid.GetRow(key), Grid.GetColumn(key)];
+         }
+
         private void OnKeySwitched(object sender, EventArgs e)
         {
+            int Row = Grid.GetRow((UIElement)sender);
+            int Col = Grid.GetColumn((UIElement)sender);
 
+            GameMatrix.SwitchKey(Row, Col);
+
+            UpdateUserinterface(GameMatrix.Data);
+            if (GameMatrix.isOFF) MessageBox.Show("Passed");
         }
     }
 }

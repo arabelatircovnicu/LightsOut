@@ -53,9 +53,10 @@ namespace LightsOut.Elements
 
         private void Panel_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            OnSwitch(this, e);
             UpdateStatus(!Status);
             ClickSound.Play();
+            OnSwitch(this, e);
+
         }
 
         private void Panel_MouseLeave(object sender, MouseEventArgs e)

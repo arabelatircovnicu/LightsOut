@@ -17,7 +17,7 @@ namespace LightsOut.Classes
         }
 
 
-        public static LevelType Level(byte LevelNumber)
+        public static LevelType Level(int LevelNumber)
         {
             var Json = Encoding.UTF8.GetString(Properties.Resources.levels);
             JArray levels = JArray.Parse(Json);

@@ -11,7 +11,8 @@ namespace LightsOut.Classes
 {
     public class GridHelpers
     {
-        #region RowCount Property
+        #region RowCount Propert
+
 
         /// <summary>
         /// Adds the specified number of Rows to RowDefinitions. 
@@ -190,5 +191,7 @@ namespace LightsOut.Classes
                         new GridLength(1, GridUnitType.Star);
             }
         }
+
+
     }
 }
