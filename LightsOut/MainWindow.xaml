@@ -24,6 +24,15 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
           </Grid>
+
+        <DockPanel>
+            <Grid Name="WinTextBoard" Visibility="Hidden" Height="90" Background="#5ED16B" >
+                <Label Content="YOU WIN THIS BATTEL.."  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#009344"  FontSize="32" FontFamily="ource Sans Pro Black"  FontWeight="Bold"/>
+            </Grid>
+        </DockPanel>
+
     </Grid>
+    
+    
     
 </Window>

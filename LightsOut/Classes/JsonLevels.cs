@@ -16,6 +16,7 @@ namespace LightsOut.Classes
             public int[] On;
         }
 
+        public static int Count { get { return JArray.Parse(Encoding.UTF8.GetString(Properties.Resources.levels)).Count; } }
 
         public static LevelType Level(int LevelNumber)
         {
@@ -32,5 +33,6 @@ namespace LightsOut.Classes
             }
             return L;
         }
+
     }
 }

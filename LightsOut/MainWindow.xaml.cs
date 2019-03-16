@@ -24,6 +24,9 @@ namespace LightsOut
     public partial class MainWindow : Window
     {
         LightOffMatrix GameMatrix;
+        ResultControl trophyControl;
+        ResultControl switchControl;
+        int CurrentLevel = 0;
 
         public MainWindow()
         {
@@ -38,7 +41,7 @@ namespace LightsOut
             int LevelColumns = JsonLevels.Level(LevelNumber).Columns;
 
             GameMatrix = new LightOffMatrix(LevelRows,LevelColumns);
-            //GameMatrix.Init(JsonLevels.Level(LevelNumber).On);
+            GameMatrix.Init(JsonLevels.Level(LevelNumber).On);
             UpdateUserinterface(GameMatrix.Data);
 
         }
@@ -49,6 +52,8 @@ namespace LightsOut
             int iRow = -1;
             int iCol = -1;
 
+            if (LevelNumber > JsonLevels.Count) LevelNumber = 0;
+
             int LevelRows = JsonLevels.Level(LevelNumber).Rows;
             int LevelColumns = JsonLevels.Level(LevelNumber).Columns;
 
@@ -58,7 +63,11 @@ namespace LightsOut
             this.Width = LevelColumns * new KeyControl().PanelWidth;
             this.Height= LevelRows* new KeyControl().PanelHeight + 50;
 
-            
+
+            while (GamePanel.Children.Count > 0) GamePanel.Children.Remove(GamePanel.Children[0]);
+            while (StatusPanel.Children.Count > 0) StatusPanel.Children.Remove(StatusPanel.Children[0]);
+
+
 
             foreach (RowDefinition row in GamePanel.RowDefinitions)
             {
@@ -79,8 +88,11 @@ namespace LightsOut
                 }
             }
 
-            ResultControl trophyControl = new ResultControl("Trophy.txt");
-            ResultControl switchControl = new ResultControl("Switch.txt");
+
+            WinTextBoard.MouseUp += WinTextBoard_MouseUp;
+
+            trophyControl = new ResultControl("Trophy.txt");
+            switchControl = new ResultControl("Switch.txt");
 
             trophyControl.ImageIndex = 0;
             switchControl.ImageIndex = 1;
@@ -105,13 +117,39 @@ namespace LightsOut
 
         private void OnKeySwitched(object sender, EventArgs e)
         {
+            if (WinTextBoard.Visibility == Visibility.Visible)
+            {
+                WinTextBoard_MouseUp(sender,null);
+                return;
+            }
+
             int Row = Grid.GetRow((UIElement)sender);
             int Col = Grid.GetColumn((UIElement)sender);
 
             GameMatrix.SwitchKey(Row, Col);
-
             UpdateUserinterface(GameMatrix.Data);
-            if (GameMatrix.isOFF) MessageBox.Show("Passed");
+            switchControl.Inc();
+
+            if (GameMatrix.isOFF)
+            {
+                trophyControl.Inc();
+                WinTextBoard.Visibility = Visibility.Visible;
+                GamePanel.Background = WinTextBoard.Background;
+            }
+        }
+
+        
+        private void WinTextBoard_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (WinTextBoard.Visibility == Visibility.Visible)
+            {
+                GamePanel.Background = new SolidColorBrush(Color.FromRgb(0xFF, 48, 48));
+                WinTextBoard.Visibility = Visibility.Hidden;
+                CurrentLevel++;
+                InitializeUserinteface(CurrentLevel);
+                InitBusinesslayer(CurrentLevel);
+            }
+
         }
     }
 }

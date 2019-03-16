@@ -45,6 +45,7 @@ namespace LightsOut
         public void Inc()
         {
             n++;
+            TextValue.Content = n;
             SaveData();
         }
 
