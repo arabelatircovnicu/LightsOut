@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LightsOut.Elements;
 
 namespace LightsOut
 {
@@ -23,6 +24,29 @@ namespace LightsOut
         public MainWindow()
         {
             InitializeComponent();
+            InitUI();
         }
+        public void InitUI()
+        {
+            int iRow = -1;
+            int iCol = -1;
+            
+            foreach (RowDefinition row in GamePanel.RowDefinitions)
+            {
+                iRow++;
+                iCol = -1;
+                foreach(ColumnDefinition col in GamePanel.ColumnDefinitions)
+                {
+                    KeyControl Key = new KeyControl();
+                    iCol++;
+                    RemoveLogicalChild(Key);
+                    GamePanel.Children.Add(Key);
+                    Grid.SetColumn(Key, iCol);
+                    Grid.SetRow(Key, iRow);
+                }
+            }
+
+        }
+
     }
 }
