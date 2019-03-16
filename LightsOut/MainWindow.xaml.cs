@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
 using LightsOut.Elements;
+using LightsOut.Classes;
 
 namespace LightsOut
 {
@@ -21,16 +23,29 @@ namespace LightsOut
     /// </summary>
     public partial class MainWindow : Window
     {
+
+
         public MainWindow()
         {
             InitializeComponent();
             InitializeUserinteface();
         }
-        public void InitializeUserinteface()
+
+        private void InitializeUserinteface(Byte LevelNumber=0)
         {
+
             int iRow = -1;
             int iCol = -1;
-            
+
+            int LevelRows = JsonLevels.Level(LevelNumber).Rows;
+            int LevelColumns = JsonLevels.Level(LevelNumber).Columns;
+
+            GridHelpers.SetRowCount(GamePanel, LevelRows);
+            GridHelpers.SetColumnCount(GamePanel, LevelColumns);
+
+            this.Width = LevelColumns * new KeyControl().PanelWidth;
+            this.Height= LevelRows* new KeyControl().PanelHeight + 50;
+
             foreach (RowDefinition row in GamePanel.RowDefinitions)
             {
                 iRow++;
@@ -43,6 +58,7 @@ namespace LightsOut
                     GamePanel.Children.Add(Key);
                     Grid.SetColumn(Key, iCol);
                     Grid.SetRow(Key, iRow);
+                    Key.OnSwitch += OnKeySwitched;
                 }
             }
 
@@ -57,7 +73,16 @@ namespace LightsOut
 
             StatusPanel.Children.Add(trophyControl);
             StatusPanel.Children.Add(switchControl);
+
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            this.ResizeMode = ResizeMode.CanMinimize;
+            this.WindowStyle = WindowStyle.ToolWindow;
+            this.Title = "LightOFF (Level" + (LevelNumber+1) + ")";
         }
 
+        private void OnKeySwitched(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -17,13 +17,17 @@ using System.Windows.Shapes;
 namespace LightsOut.Elements
 {
     /// <summary>
-    /// Interaktionslogik für ImageOFF.xaml
+    /// Interaktionslogik für KeyControl.xaml
     /// </summary>
     public partial class KeyControl : UserControl
     {
+        public event EventHandler<EventArgs> OnSwitch;
+
         private SoundPlayer ClickSound = new SoundPlayer(Properties.Resources.Click);
         private Boolean Status = false;
         public Boolean On { get{ return Status; } set { UpdateStatus(value); } }
+        public double PanelWidth { get { return ViewSwitch.Width; } }
+        public double PanelHeight { get { return ViewSwitch.Height; } }
 
         public KeyControl()
         {
@@ -49,6 +53,7 @@ namespace LightsOut.Elements
 
         private void Panel_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            OnSwitch(this, e);
             UpdateStatus(!Status);
             ClickSound.Play();
         }
@@ -66,5 +71,9 @@ namespace LightsOut.Elements
             ViewOFF.Visibility = !Status ? Visibility.Visible : Visibility.Hidden;
         }
 
+        private void OnSwitched(EventArgs e)
+        {
+            if (OnSwitch != null) OnSwitch(this, e);
+        }
     }
 }

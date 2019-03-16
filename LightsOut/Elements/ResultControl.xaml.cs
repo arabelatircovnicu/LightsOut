@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 namespace LightsOut
 {
     /// <summary>
-    /// Interaktionslogik für SwitchControl.xaml
+    /// Interaktionslogik für ResultControl.xaml
     /// </summary>
     public partial class ResultControl : UserControl
     {

@@ -89,7 +89,7 @@
         </Viewbox>
 
 
-    <Label Name="TextValue"  Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="White" Content="00"  FontSize="48" FontFamily="Arial Black"  FontWeight="Bold"/>
+        <Label Name="TextValue"  Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="White" Content="00"  FontSize="48" FontFamily="ource Sans Pro Black"  FontWeight="Bold"/>
     </Grid>
    
     

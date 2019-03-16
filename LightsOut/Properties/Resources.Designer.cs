@@ -68,5 +68,15 @@ namespace LightsOut.Properties {
                 return ResourceManager.GetStream("Click", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        /// </summary>
+        internal static byte[] levels {
+            get {
+                object obj = ResourceManager.GetObject("levels", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
