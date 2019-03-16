@@ -24,9 +24,9 @@ namespace LightsOut
         public MainWindow()
         {
             InitializeComponent();
-            InitUI();
+            InitializeUserinteface();
         }
-        public void InitUI()
+        public void InitializeUserinteface()
         {
             int iRow = -1;
             int iCol = -1;
@@ -46,6 +46,17 @@ namespace LightsOut
                 }
             }
 
+            ResultControl trophyControl = new ResultControl("Trophy.txt");
+            ResultControl switchControl = new ResultControl("Switch.txt");
+
+            trophyControl.ImageIndex = 0;
+            switchControl.ImageIndex = 1;
+
+            Grid.SetColumn(trophyControl, 0);
+            Grid.SetColumn(switchControl, 1);
+
+            StatusPanel.Children.Add(trophyControl);
+            StatusPanel.Children.Add(switchControl);
         }
 
     }

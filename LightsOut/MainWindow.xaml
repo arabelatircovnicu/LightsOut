@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LightsOut"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="500">
+        Title="MainWindow" Height="650" Width="500">
     <Grid Name="BaseGrid" Background="#FF4848">
         <Grid.RowDefinitions>
             <RowDefinition Height="500"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
 
 
@@ -31,7 +31,7 @@
 
         </Grid>
 
-        <Grid Grid.Row="1"  Background="#404040" Width="500">
+        <Grid Name="StatusPanel" Grid.Row="1"  Background="#404040" Width="500" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
