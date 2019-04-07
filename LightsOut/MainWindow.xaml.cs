@@ -27,7 +27,7 @@ namespace LightsOut
         ResultControl trophyControl;
         ResultControl switchControl;
         int CurrentLevel = 0;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -37,76 +37,78 @@ namespace LightsOut
 
         private void InitBusinesslayer(int LevelNumber = 0)
         {
-            int LevelRows = JsonLevels.Level(LevelNumber).Rows;
-            int LevelColumns = JsonLevels.Level(LevelNumber).Columns;
+            var level = JsonLevels.Level(LevelNumber);
+            if(level.IsValid)
+            {
+                int LevelRows = level.Rows;
+                int LevelColumns = level.Columns;
 
-            GameMatrix = new LightOffMatrix(LevelRows,LevelColumns);
-            GameMatrix.Init(JsonLevels.Level(LevelNumber).On);
-            UpdateUserinterface(GameMatrix.Data);
-
+                GameMatrix = new LightOffMatrix(LevelRows, LevelColumns);
+                GameMatrix.Init(JsonLevels.Level(LevelNumber).On);
+                UpdateUserinterface(GameMatrix.Data);
+            }            
         }
 
         private void InitializeUserinteface(int LevelNumber=0)
         {
-
             int iRow = -1;
             int iCol = -1;
 
-            if (LevelNumber > JsonLevels.Count) LevelNumber = 0;
-
-            int LevelRows = JsonLevels.Level(LevelNumber).Rows;
-            int LevelColumns = JsonLevels.Level(LevelNumber).Columns;
-
-            GridHelpers.SetRowCount(GamePanel, LevelRows);
-            GridHelpers.SetColumnCount(GamePanel, LevelColumns);
-
-            this.Width = LevelColumns * new KeyControl().PanelWidth;
-            this.Height= LevelRows* new KeyControl().PanelHeight + 50;
-
-
-            while (GamePanel.Children.Count > 0) GamePanel.Children.Remove(GamePanel.Children[0]);
-            while (StatusPanel.Children.Count > 0) StatusPanel.Children.Remove(StatusPanel.Children[0]);
-
-
-
-            foreach (RowDefinition row in GamePanel.RowDefinitions)
+            var level = JsonLevels.Level(LevelNumber);
+            if (level.IsValid)
             {
-                iRow++;
-                iCol = -1;
-                foreach(ColumnDefinition col in GamePanel.ColumnDefinitions)
+                if (LevelNumber > JsonLevels.Count) LevelNumber = 0;
+
+                int LevelRows = level.Rows;
+                int LevelColumns = level.Columns;
+
+                GridHelpers.SetRowCount(GamePanel, LevelRows);
+                GridHelpers.SetColumnCount(GamePanel, LevelColumns);
+
+                this.Width = LevelColumns * new KeyControl().PanelWidth;
+                this.Height = LevelRows * new KeyControl().PanelHeight + 50;
+                
+                while (GamePanel.Children.Count > 0) GamePanel.Children.Remove(GamePanel.Children[0]);
+                while (StatusPanel.Children.Count > 0) StatusPanel.Children.Remove(StatusPanel.Children[0]);
+                
+                foreach (RowDefinition row in GamePanel.RowDefinitions)
                 {
-                    iCol++;
-                    KeyControl Key = new KeyControl();
-                    Key.Tag = iRow * LevelColumns + iCol;
+                    iRow++;
+                    iCol = -1;
+                    foreach (ColumnDefinition col in GamePanel.ColumnDefinitions)
+                    {
+                        iCol++;
+                        KeyControl Key = new KeyControl();
+                        Key.Tag = iRow * LevelColumns + iCol;
 
-                    RemoveLogicalChild(Key);
-                    GamePanel.Children.Add(Key);
+                        RemoveLogicalChild(Key);
+                        GamePanel.Children.Add(Key);
 
-                    Grid.SetColumn(Key, iCol);
-                    Grid.SetRow(Key, iRow);
-                    Key.OnSwitch += OnKeySwitched;
+                        Grid.SetColumn(Key, iCol);
+                        Grid.SetRow(Key, iRow);
+                        Key.OnSwitch += OnKeySwitched;
+                    }
                 }
+
+                WinTextBoard.MouseUp += WinTextBoard_MouseUp;
+
+                trophyControl = new ResultControl("Trophy.txt");
+                switchControl = new ResultControl("Switch.txt");
+
+                trophyControl.ImageIndex = 0;
+                switchControl.ImageIndex = 1;
+
+                Grid.SetColumn(trophyControl, 0);
+                Grid.SetColumn(switchControl, 1);
+
+                StatusPanel.Children.Add(trophyControl);
+                StatusPanel.Children.Add(switchControl);
+
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                this.ResizeMode = ResizeMode.CanMinimize;
+                this.WindowStyle = WindowStyle.ToolWindow;
+                this.Title = "LightOFF (Level" + (LevelNumber + 1) + ")";
             }
-
-
-            WinTextBoard.MouseUp += WinTextBoard_MouseUp;
-
-            trophyControl = new ResultControl("Trophy.txt");
-            switchControl = new ResultControl("Switch.txt");
-
-            trophyControl.ImageIndex = 0;
-            switchControl.ImageIndex = 1;
-
-            Grid.SetColumn(trophyControl, 0);
-            Grid.SetColumn(switchControl, 1);
-
-            StatusPanel.Children.Add(trophyControl);
-            StatusPanel.Children.Add(switchControl);
-
-            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            this.ResizeMode = ResizeMode.CanMinimize;
-            this.WindowStyle = WindowStyle.ToolWindow;
-            this.Title = "LightOFF (Level" + (LevelNumber+1) + ")";
         }
 
         public void UpdateUserinterface(Boolean[,] Matrix)

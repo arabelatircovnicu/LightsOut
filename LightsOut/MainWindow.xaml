@@ -8,16 +8,11 @@
         Title="MainWindow" Height="1000" Width="500">
     <Grid Name="BaseGrid" Background="#FF484899" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-
-
-
         <Grid Name="GamePanel" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Background="#FF4848" >
-
         </Grid>
-
         <Grid Name="StatusPanel" Grid.Row="1"  Background="#404040" HorizontalAlignment="Stretch" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

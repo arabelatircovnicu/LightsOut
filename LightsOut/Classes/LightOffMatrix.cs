@@ -11,7 +11,8 @@ namespace LightsOut.Classes
         private int RowCount,ColCount;
         private Boolean[,] Matrix;
         public Boolean[,] Data { get { return Matrix; } }
-        public Boolean[,] Cell { get { return Matrix; } }
+
+        //public Boolean[,] Cell { get { return Matrix; } }
         public Boolean isOFF { get { return isOff(); } }
 
 
@@ -25,8 +26,7 @@ namespace LightsOut.Classes
         public void Init(int[] List)
         {
             foreach (int n in List)
-                Matrix[n / ColCount, n % ColCount] = true;
-
+                    Matrix[n / ColCount, n % ColCount] = true;
         }
 
         public void SwitchKey(int Row, int Column)
@@ -37,15 +37,14 @@ namespace LightsOut.Classes
             if((Row-1)>=0)          Matrix[Row - 1, Column    ] = !Matrix[Row - 1, Column   ];
             if((Column-1)>=0)       Matrix[Row    , Column - 1] = !Matrix[Row    , Column - 1];
             if((Column+1)<ColCount) Matrix[Row    , Column + 1] = !Matrix[Row    , Column + 1];
-
         }
-
+        
         private Boolean isOff()
         {
             Boolean Result = true;
             for (int i = 0; i < RowCount; i++)
                 for (int j = 0; j < ColCount; j++)
-                    if (Matrix[i, j]) Result = false;
+                    if (Matrix[i, j]) return false;
             return Result;
         }
     }

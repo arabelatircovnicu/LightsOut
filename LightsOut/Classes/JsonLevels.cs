@@ -14,10 +14,15 @@ namespace LightsOut.Classes
             public string Name;
             public int Columns, Rows;
             public int[] On;
+
+            public bool IsValid
+            {
+               get { return Columns != 0 && Rows != 0 && On != null; }
+            }
         }
 
         public static int Count { get { return JArray.Parse(Encoding.UTF8.GetString(Properties.Resources.levels)).Count; } }
-
+        
         public static LevelType Level(int LevelNumber)
         {
             var Json = Encoding.UTF8.GetString(Properties.Resources.levels);
@@ -25,13 +30,13 @@ namespace LightsOut.Classes
 
             LevelType L = new LevelType();
             if (LevelNumber < levels.Count)
-            {
+            {                
                 L.Name = levels[LevelNumber].ToString();
                 L.Rows = (int)levels[LevelNumber]["rows"];
                 L.Columns = (int)levels[LevelNumber]["columns"];
-                L.On = levels[LevelNumber]["on"].Values<int>().ToArray();
+                L.On = levels[LevelNumber]["on"].Values<int>().ToArray();               
             }
-            return L;
+            return  L;
         }
 
     }
