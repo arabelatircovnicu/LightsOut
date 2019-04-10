@@ -70,6 +70,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\ArrayHelper.cs" />
     <Compile Include="Classes\LightOffMatrix.cs" />
     <Compile Include="Classes\GridHelpers.cs" />
     <Compile Include="Classes\JsonLevels.cs" />

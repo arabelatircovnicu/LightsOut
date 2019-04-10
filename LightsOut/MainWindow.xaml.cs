@@ -33,20 +33,21 @@ namespace LightsOut
             InitializeComponent();
             InitializeUserinteface();
             InitBusinesslayer();
+            ArrayHelper.GetSolutionWithGaussianReduction(GameMatrix.Data);
         }
 
         private void InitBusinesslayer(int LevelNumber = 0)
         {
             var level = JsonLevels.Level(LevelNumber);
-            if(level.IsValid)
+            if (level.IsValid)
             {
                 int LevelRows = level.Rows;
                 int LevelColumns = level.Columns;
 
                 GameMatrix = new LightOffMatrix(LevelRows, LevelColumns);
                 GameMatrix.Init(JsonLevels.Level(LevelNumber).On);
-                UpdateUserinterface(GameMatrix.Data);
-            }            
+                UpdateUserinterface(GameMatrix.Data);                              
+            }                                    
         }
 
         private void InitializeUserinteface(int LevelNumber=0)
@@ -150,8 +151,8 @@ namespace LightsOut
                 CurrentLevel++;
                 InitializeUserinteface(CurrentLevel);
                 InitBusinesslayer(CurrentLevel);
+                ArrayHelper.GetSolutionWithGaussianReduction(GameMatrix.Data);
             }
-
         }
     }
 }
